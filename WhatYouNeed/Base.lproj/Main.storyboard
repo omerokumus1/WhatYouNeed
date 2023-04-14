@@ -1,24 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Details View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="DetailsViewController" customModule="WhatYouNeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="İsim &amp; Soyisim" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ywe-CI-Zqp">
+                                <rect key="frame" x="51.666666666666657" y="179" width="290" height="38"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="290" id="KaN-9F-Hs2"/>
+                                </constraints>
+                                <color key="textColor" red="0.13333333333333333" green="0.19215686274509802" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" textContentType="name"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Telefon" textAlignment="center" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Mtn-VZ-G9b">
+                                <rect key="frame" x="51.666666666666657" y="265" width="290" height="38.333333333333314"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="290" id="g0u-4q-nEF"/>
+                                </constraints>
+                                <color key="textColor" red="0.1333333333" green="0.19215686269999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" textContentType="tel"/>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xdL-lc-jvB">
+                                <rect key="frame" x="51.666666666666657" y="499.33333333333326" width="290" height="150"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5PX-8U-bPF">
+                                        <rect key="frame" x="-0.66666666666665719" y="0.0" width="291" height="150"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" red="0.1333333333" green="0.19215686269999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" textContentType="street-address"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="5PX-8U-bPF" firstAttribute="centerY" secondItem="xdL-lc-jvB" secondAttribute="centerY" id="HeX-lc-C9o"/>
+                                    <constraint firstAttribute="height" constant="150" id="XSr-y8-8hr"/>
+                                    <constraint firstItem="5PX-8U-bPF" firstAttribute="width" secondItem="xdL-lc-jvB" secondAttribute="width" multiplier="1.00345" id="Xzu-RH-eZB"/>
+                                    <constraint firstItem="5PX-8U-bPF" firstAttribute="centerX" secondItem="xdL-lc-jvB" secondAttribute="centerX" id="YS9-GY-9U3"/>
+                                    <constraint firstItem="5PX-8U-bPF" firstAttribute="height" secondItem="xdL-lc-jvB" secondAttribute="height" id="kas-Jh-8Vj"/>
+                                    <constraint firstAttribute="width" constant="290" id="r3Z-x9-0wI"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C38-YO-joR">
+                                <rect key="frame" x="51.666666666666657" y="351.33333333333331" width="290" height="100"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8aS-Zc-eAU">
+                                        <rect key="frame" x="-0.66666666666665719" y="-13" width="291" height="126"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" red="0.1333333333" green="0.19215686269999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" textContentType="street-address"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="290" id="Lcd-P6-gzz"/>
+                                    <constraint firstAttribute="height" constant="100" id="Tpx-2r-TyS"/>
+                                    <constraint firstItem="8aS-Zc-eAU" firstAttribute="height" secondItem="C38-YO-joR" secondAttribute="height" multiplier="1.26" id="aQN-2c-Vns"/>
+                                    <constraint firstItem="8aS-Zc-eAU" firstAttribute="centerX" secondItem="C38-YO-joR" secondAttribute="centerX" id="fSU-Fq-v3t"/>
+                                    <constraint firstItem="8aS-Zc-eAU" firstAttribute="centerY" secondItem="C38-YO-joR" secondAttribute="centerY" id="iAd-mi-ud0"/>
+                                    <constraint firstItem="8aS-Zc-eAU" firstAttribute="width" secondItem="C38-YO-joR" secondAttribute="width" multiplier="1.00345" id="y3X-TP-UHc"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" red="0.86666666670000003" green="0.94117647059999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="C38-YO-joR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0iD-Ix-NLN"/>
+                            <constraint firstItem="C38-YO-joR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1B3-Iy-5Ia"/>
+                            <constraint firstItem="xdL-lc-jvB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8P5-Al-flB"/>
+                            <constraint firstItem="Mtn-VZ-G9b" firstAttribute="top" secondItem="Ywe-CI-Zqp" secondAttribute="bottom" constant="48" id="BHt-8L-Q9o"/>
+                            <constraint firstItem="Mtn-VZ-G9b" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Pcz-MU-BTs"/>
+                            <constraint firstItem="xdL-lc-jvB" firstAttribute="top" secondItem="C38-YO-joR" secondAttribute="bottom" constant="48" id="UPp-C4-Vjz"/>
+                            <constraint firstItem="Ywe-CI-Zqp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fgo-4U-wfC"/>
+                            <constraint firstItem="Ywe-CI-Zqp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="120" id="nWq-o0-HqA"/>
+                            <constraint firstItem="C38-YO-joR" firstAttribute="top" secondItem="Mtn-VZ-G9b" secondAttribute="bottom" constant="48" id="wew-7e-HF1"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="addressContainer" destination="C38-YO-joR" id="JLE-Mo-VwP"/>
+                        <outlet property="addressTxt" destination="8aS-Zc-eAU" id="9hA-8y-CD1"/>
+                        <outlet property="nameTxt" destination="Ywe-CI-Zqp" id="Joe-3t-U2c"/>
+                        <outlet property="needsContainer" destination="xdL-lc-jvB" id="gS3-55-yhv"/>
+                        <outlet property="needsTxt" destination="5PX-8U-bPF" id="eDW-0g-Fg5"/>
+                        <outlet property="phoneTxt" destination="Mtn-VZ-G9b" id="9wh-OK-les"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="130.53435114503816" y="-27.464788732394368"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
