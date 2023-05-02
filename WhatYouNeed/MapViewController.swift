@@ -10,12 +10,25 @@ import MapKit
 
 class MapViewController: UIViewController {
 
+    @IBOutlet weak var mapView: MKMapView!
+    private var locationManager = CLLocationManager()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.delegate = self
+        initLocationManager()
+    }
+    
+    private func initLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        performSegue(withIdentifier: "goToDetails", sender: nil)
+        //performSegue(withIdentifier: "goToDetails", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -29,7 +42,22 @@ class MapViewController: UIViewController {
             }
         }
     }
+}
 
+//MARK: - MKMapViewDelegate
+extension MapViewController: MKMapViewDelegate {
     
+    
+}
 
+
+//MARK: - CLLocationManagerDelegate
+extension MapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let marasCoordinates = (37.5764759, 36.9112263)
+        let location = CLLocationCoordinate2D(latitude: marasCoordinates.0, longitude: marasCoordinates.1)
+        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        let region = MKCoordinateRegion(center: location, span: span)
+        mapView.setRegion(region, animated: true)
+    }
 }
