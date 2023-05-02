@@ -64,9 +64,9 @@ extension MapViewController: MKMapViewDelegate {
     
     private func addDummyPins() {
         viewModel.dummyPins.forEach { person in
-            let coordinate = self.mapView.convert(person.coordinate, toCoordinateFrom: self.mapView)
             let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
+            annotation.coordinate = CLLocationCoordinate2D(latitude: person.location.coordinate.latitude,
+                                                           longitude: person.location.coordinate.longitude)
             annotation.title = person.name
             self.mapView.addAnnotation(annotation)
         }
