@@ -18,6 +18,23 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         mapView.delegate = self
         initLocationManager()
+        pinning()
+    }
+    
+    private func pinning() {
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(pinLocation(gestureRecognizer:)))
+        longPressGesture.minimumPressDuration = 1
+        mapView.addGestureRecognizer(longPressGesture)
+    }
+    
+    @objc private func pinLocation(gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            let touchedPoint = gestureRecognizer.location(in: self.mapView)
+            let touchedCoordinates = self.mapView.convert(touchedPoint, toCoordinateFrom: self.mapView)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = touchedCoordinates
+            self.mapView.addAnnotation(annotation)
+        }
     }
     
     private func initLocationManager() {
@@ -56,7 +73,7 @@ extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let marasCoordinates = (37.5764759, 36.9112263)
         let location = CLLocationCoordinate2D(latitude: marasCoordinates.0, longitude: marasCoordinates.1)
-        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: location, span: span)
         mapView.setRegion(region, animated: true)
     }
