@@ -216,6 +216,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="kyF-Nk-pUb"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="mapView" destination="nPn-RG-ak5" id="cph-EW-4Ry"/>
                         <segue destination="xRm-mc-mD8" kind="presentation" identifier="goToDetails" id="jmg-ps-9li"/>
                     </connections>
                 </viewController>
