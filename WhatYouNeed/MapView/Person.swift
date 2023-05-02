@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct Person {
     let name: String
     let phone: String
-    let coordinate: CGPoint
+    let location: CLLocation
     let needs: [String]
 }
