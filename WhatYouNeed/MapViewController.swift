@@ -22,11 +22,23 @@ class MapViewController: UIViewController {
     }
     
     private func pinning() {
+        
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(pinLocation(gestureRecognizer:)))
         longPressGesture.minimumPressDuration = 1
         mapView.addGestureRecognizer(longPressGesture)
     }
     
+    
+    // touchedPoint    CGPoint    (x = 252.33332824707031, y = 279)
+    // touchedPoint    CGPoint    (x = 29, y = 308.66665649414063)
+    // touchedPoint    CGPoint    (x = 83.333328247070313, y = 598)
+    /*
+     touchedCoordinates    CLLocationCoordinate2D
+         latitude    CLLocationDegrees    37.577551434230919
+         longitude    CLLocationDegrees    36.912010863059699
+     
+        
+     */
     @objc private func pinLocation(gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
             let touchedPoint = gestureRecognizer.location(in: self.mapView)
@@ -63,8 +75,21 @@ class MapViewController: UIViewController {
 
 //MARK: - MKMapViewDelegate
 extension MapViewController: MKMapViewDelegate {
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        addDummyPins()
+    }
     
-    
+    private func addDummyPins() {
+        let dummyPins = [CGPoint(x: 252.33332824707031, y: 279),
+                         CGPoint(x: 29, y: 308.66665649414063),
+                         CGPoint(x: 83.333328247070313, y: 598)]
+        dummyPins.forEach { point in
+            let coordinate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            self.mapView.addAnnotation(annotation)
+        }
+    }
 }
 
 
@@ -75,6 +100,6 @@ extension MapViewController: CLLocationManagerDelegate {
         let location = CLLocationCoordinate2D(latitude: marasCoordinates.0, longitude: marasCoordinates.1)
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: location, span: span)
-        mapView.setRegion(region, animated: true)
+        mapView.setRegion(region, animated: false)
     }
 }
