@@ -12,18 +12,20 @@ class MapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     private var locationManager = CLLocationManager()
-    
+    private var dummyPinsAdded = false
+    private let annotationId = "annotation"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        mapView.register(MKPinAnnotationView.self, forAnnotationViewWithReuseIdentifier: annotationId)
         mapView.delegate = self
         initLocationManager()
         pinning()
     }
     
     private func pinning() {
-        
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(pinLocation(gestureRecognizer:)))
+        let longPressGesture = UILongPressGestureRecognizer(target: self,
+                                                            action: #selector(pinLocation(gestureRecognizer:)))
         longPressGesture.minimumPressDuration = 1
         mapView.addGestureRecognizer(longPressGesture)
     }
@@ -45,6 +47,8 @@ class MapViewController: UIViewController {
             let touchedCoordinates = self.mapView.convert(touchedPoint, toCoordinateFrom: self.mapView)
             let annotation = MKPointAnnotation()
             annotation.coordinate = touchedCoordinates
+            annotation.title = "title"
+            annotation.subtitle = "subtitle"
             self.mapView.addAnnotation(annotation)
         }
     }
@@ -57,26 +61,20 @@ class MapViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //performSegue(withIdentifier: "goToDetails", sender: nil)
+        //
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("prepare")
-        if segue.identifier == "goToDetails" {
-            let vc = segue.destination
-            if vc.presentingViewController?.isBeingPresented ?? false {
-                self.present(vc, animated: true)
-            } else {
-                print("you probably crashed here!")
-            }
-        }
-    }
+    
 }
 
 //MARK: - MKMapViewDelegate
 extension MapViewController: MKMapViewDelegate {
+    
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
-        addDummyPins()
+        if !dummyPinsAdded {
+            addDummyPins()
+            dummyPinsAdded = true
+        }
     }
     
     private func addDummyPins() {
@@ -87,7 +85,53 @@ extension MapViewController: MKMapViewDelegate {
             let coordinate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
+            annotation.title = "title"
+            annotation.subtitle = "subtitle"
             self.mapView.addAnnotation(annotation)
+        }
+    }
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation {
+            return nil
+        }
+
+
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationId) as? MKPinAnnotationView
+
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotationId)
+            pinView?.canShowCallout = true
+            pinView?.tintColor = .systemBlue
+            pinView?.rightCalloutAccessoryView = getCalloutButton()
+
+        } else {
+            pinView?.annotation = annotation
+        }
+
+        return pinView
+    }
+    
+    private func getCalloutButton() -> UIButton {
+        let button = UIButton(type: UIButton.ButtonType.detailDisclosure)
+        button.addTarget(self, action: #selector(goToDetailsVC), for: .touchUpInside)
+        
+        return button
+    }
+    
+    @objc private func goToDetailsVC() {
+        performSegue(withIdentifier: "goToDetails", sender: nil)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("prepare")
+        if segue.identifier == "goToDetails" {
+            let vc = segue.destination
+            if vc.presentingViewController?.isBeingPresented ?? false {
+                self.present(vc, animated: true)
+            } else {
+                print("you probably crashed here!")
+            }
         }
     }
 }
