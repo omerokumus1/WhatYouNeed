@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import CoreLocation
 
 class DetailsViewController: UIViewController {
-
+    
     @IBOutlet weak var nameTxt: UITextField!
     @IBOutlet weak var phoneTxt: UITextField!
     @IBOutlet weak var addressTxt: UITextView!
@@ -16,13 +17,16 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var addressContainer: UIView!
     @IBOutlet weak var needsContainer: UIView!
     
+    
+    var person: Person?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initViews()
     }
     
     private func initViews() {
-        dummyInit()
+        //        dummyInit()
         initNameTxt()
         initPhoneTxt()
         initAddressTxt()
@@ -31,12 +35,14 @@ class DetailsViewController: UIViewController {
     }
     
     private func initNameTxt() {
+        nameTxt.text = person?.name
         applyShadow(view: nameTxt)
         nameTxt.layer.cornerRadius = 8
         nameTxt.backgroundColor = .clear
     }
     
     private func initPhoneTxt() {
+        phoneTxt.text = person?.phone
         applyShadow(view: phoneTxt)
         phoneTxt.layer.cornerRadius = 8
         phoneTxt.backgroundColor = .clear
@@ -64,6 +70,7 @@ class DetailsViewController: UIViewController {
     
     
     private func initAddressTxt() {
+        setAddress()
         addressTxt.font = UIFont.systemFont(ofSize: 20.0)
         addressContainer.layer.cornerRadius = 8
         addressContainer.backgroundColor = .clear
@@ -72,7 +79,42 @@ class DetailsViewController: UIViewController {
         applyShadow(view: addressContainer)
     }
     
+    private func setAddress() {
+        guard let person = person else {return}
+        var address = ""
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(person.location) { [weak self] (placemarks, error) in
+            guard let self = self else {return}
+            if let _ = error {
+                return
+            }
+            guard let placemark = placemarks?.first else {return}
+            let streetNumber = placemark.subThoroughfare
+            let streetName = placemark.thoroughfare
+            let city = placemark.locality
+            address.append(streetName ?? "")
+            address.append("\n")
+            address.append("No: ")
+            address.append(streetNumber ?? "")
+            address.append("\n")
+            address.append(placemark.subLocality ?? "")
+            address.append("/")
+            address.append(city ?? "")
+            address.append("/")
+            address.append(placemark.country ?? "")
+            address.append(", ")
+            address.append(placemark.postalCode ?? "")
+            
+            DispatchQueue.main.async {
+                self.addressTxt.text = address
+            }
+        }
+        
+        
+    }
+    
     private func initNeedsTxt() {
+        needsTxt.text = person?.needs.joined(separator: "\n")
         needsTxt.font = UIFont.systemFont(ofSize: 20.0)
         needsContainer.layer.cornerRadius = 8
         needsContainer.backgroundColor = .none
@@ -95,5 +137,5 @@ class DetailsViewController: UIViewController {
         addressTxt.flashScrollIndicators()
         needsTxt.flashScrollIndicators()
     }
-
+    
 }
