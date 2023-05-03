@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
 class DetailsViewController: UIViewController {
     
@@ -17,7 +18,7 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var addressContainer: UIView!
     @IBOutlet weak var needsContainer: UIView!
     
-    
+    private var placemark: CLPlacemark!
     var person: Person?
     
     override func viewDidLoad() {
@@ -88,7 +89,9 @@ class DetailsViewController: UIViewController {
             if let _ = error {
                 return
             }
+        
             guard let placemark = placemarks?.first else {return}
+            self.placemark = placemark
             let streetNumber = placemark.subThoroughfare
             let streetName = placemark.thoroughfare
             let city = placemark.locality
@@ -138,4 +141,31 @@ class DetailsViewController: UIViewController {
         needsTxt.flashScrollIndicators()
     }
     
+    
+    @IBAction func callClicked(_ sender: UIButton) {
+        if phoneTxt.text == nil || phoneTxt.text?.isEmpty == nil { return }
+        let phone = String(phoneTxt.text?.replacingOccurrences(of: " ", with: "").dropFirst(3) ?? "")
+        if let url = URL(string: "tel://\(phone)"){
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url) { res in
+                    print("call is ended with: \(res)" )
+                }
+            } else {
+                print("Cant call: \(UIApplication.shared.canOpenURL(url).description)")
+            }
+        }
+    }
+    
+    @IBAction func navigationClicked(_ sender: UIButton) {
+        guard let location = person?.location else {return}
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+            if let placemarks = placemarks, placemarks.count > 0 {
+                let mkPlacemark = MKPlacemark(placemark: placemarks.first!)
+                let item = MKMapItem(placemark: mkPlacemark)
+                item.name = self.person?.name
+                let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking]
+                item.openInMaps(launchOptions: launchOptions)
+            }
+        }
+    }
 }
