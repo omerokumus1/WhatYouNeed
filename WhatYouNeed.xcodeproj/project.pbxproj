@@ -10,6 +10,7 @@
 		D0124AA72A012EFC00D2E725 /* PinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0124AA62A012EFC00D2E725 /* PinData.swift */; };
 		D0124AA92A012F7B00D2E725 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0124AA82A012F7B00D2E725 /* Person.swift */; };
 		D0124AAC2A01300900D2E725 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0124AAB2A01300900D2E725 /* MapViewModel.swift */; };
+		D0124AAE2A02445A00D2E725 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0124AAD2A02445A00D2E725 /* TabBarController.swift */; };
 		D027BBCE29E93764005572C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027BBCD29E93764005572C2 /* AppDelegate.swift */; };
 		D027BBD029E93764005572C2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027BBCF29E93764005572C2 /* SceneDelegate.swift */; };
 		D027BBD229E93764005572C2 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027BBD129E93764005572C2 /* ProfileViewController.swift */; };
@@ -24,6 +25,7 @@
 		D0124AA62A012EFC00D2E725 /* PinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinData.swift; sourceTree = "<group>"; };
 		D0124AA82A012F7B00D2E725 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		D0124AAB2A01300900D2E725 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		D0124AAD2A02445A00D2E725 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		D027BBCA29E93764005572C2 /* WhatYouNeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatYouNeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D027BBCD29E93764005572C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D027BBCF29E93764005572C2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				D0124AAA2A012FD400D2E725 /* MapView */,
 				D027BBCD29E93764005572C2 /* AppDelegate.swift */,
 				D027BBCF29E93764005572C2 /* SceneDelegate.swift */,
+				D0124AAD2A02445A00D2E725 /* TabBarController.swift */,
 				D027BBD129E93764005572C2 /* ProfileViewController.swift */,
 				D027BBE329EA08FD005572C2 /* DetailsViewController.swift */,
 				D027BBD329E93764005572C2 /* Main.storyboard */,
@@ -164,6 +167,7 @@
 				D027BBD229E93764005572C2 /* ProfileViewController.swift in Sources */,
 				D027BBCE29E93764005572C2 /* AppDelegate.swift in Sources */,
 				D027BBD029E93764005572C2 /* SceneDelegate.swift in Sources */,
+				D0124AAE2A02445A00D2E725 /* TabBarController.swift in Sources */,
 				D027BBE229EA069D005572C2 /* MapViewController.swift in Sources */,
 				D0124AA92A012F7B00D2E725 /* Person.swift in Sources */,
 				D027BBE429EA08FD005572C2 /* DetailsViewController.swift in Sources */,
