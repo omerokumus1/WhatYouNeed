@@ -8,24 +8,15 @@
 import Foundation
 import CoreLocation
 
-struct Person {
-    var name: String
-    var phone: String
-    var location: CLLocation?
-    var address: String?
-    var needs: String
-    
-    init(name: String, phone: String, needs: String) {
-        self.name = name
-        self.phone = phone
-        self.needs = needs
-    }
-    
-    init(name: String, phone: String, location: CLLocation? = nil, address: String? = nil,  needs: String) {
-        self.name = name
-        self.phone = phone
-        self.location = location
-        self.address = address
-        self.needs = needs
-    }
+struct Person: Codable {
+    let name: String?
+    let phone: String?
+    let location: Location?
+    let address: String?
+    let needs: String?
+}
+
+struct Location: Codable {
+    let lat: Double
+    let long: Double
 }
