@@ -148,6 +148,14 @@
                                     <constraint firstItem="5PX-8U-bPF" firstAttribute="width" secondItem="xdL-lc-jvB" secondAttribute="width" multiplier="1.00345" id="vxk-eE-Hle"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XAw-T3-gqY">
+                                <rect key="frame" x="158" y="705" width="77" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Kaydet"/>
+                                <connections>
+                                    <action selector="onSaveClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GVO-KY-CUF"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.90588235294117647" blue="0.78823529411764703" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -163,10 +171,12 @@
                             <constraint firstAttribute="trailing" secondItem="koo-jz-y79" secondAttribute="trailing" id="MAv-QU-XiP"/>
                             <constraint firstItem="xdL-lc-jvB" firstAttribute="leading" secondItem="kEJ-Zq-phh" secondAttribute="leading" id="MdB-mU-jFB"/>
                             <constraint firstItem="Ywe-CI-Zqp" firstAttribute="leading" secondItem="6eV-Sh-kMQ" secondAttribute="leading" id="Pki-hu-Yv3"/>
+                            <constraint firstItem="XAw-T3-gqY" firstAttribute="top" secondItem="xdL-lc-jvB" secondAttribute="bottom" constant="26" id="TDu-Ku-wD8"/>
                             <constraint firstItem="C7L-0V-mEO" firstAttribute="leading" secondItem="Mtn-VZ-G9b" secondAttribute="leading" id="WzV-26-gXe"/>
                             <constraint firstItem="kEJ-Zq-phh" firstAttribute="leading" secondItem="C38-YO-joR" secondAttribute="leading" id="ZkT-j3-hnw"/>
                             <constraint firstItem="C38-YO-joR" firstAttribute="top" secondItem="C7L-0V-mEO" secondAttribute="bottom" id="aUS-1y-xZB"/>
                             <constraint firstItem="C38-YO-joR" firstAttribute="leading" secondItem="C7L-0V-mEO" secondAttribute="leading" id="c4S-pn-v23"/>
+                            <constraint firstItem="XAw-T3-gqY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cdE-0T-ib0"/>
                             <constraint firstItem="Mtn-VZ-G9b" firstAttribute="top" secondItem="v3s-pA-NcC" secondAttribute="bottom" id="dU0-7T-J6k"/>
                             <constraint firstItem="xdL-lc-jvB" firstAttribute="top" secondItem="kEJ-Zq-phh" secondAttribute="bottom" id="fV0-il-DMb"/>
                             <constraint firstItem="Mtn-VZ-G9b" firstAttribute="leading" secondItem="v3s-pA-NcC" secondAttribute="leading" id="hdF-xH-sv8"/>
@@ -331,7 +341,7 @@
                                     <constraint firstAttribute="width" constant="290" id="qYh-3v-oNY"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VvR-j6-QSE">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VvR-j6-QSE">
                                 <rect key="frame" x="281" y="441" width="60" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Mel-iD-iuH"/>

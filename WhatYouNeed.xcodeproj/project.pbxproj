@@ -19,6 +19,8 @@
 		D027BBDA29E93765005572C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D027BBD829E93765005572C2 /* LaunchScreen.storyboard */; };
 		D027BBE229EA069D005572C2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027BBE129EA069D005572C2 /* MapViewController.swift */; };
 		D027BBE429EA08FD005572C2 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027BBE329EA08FD005572C2 /* DetailsViewController.swift */; };
+		D07B3BE72A2A60E100C7E21D /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07B3BE62A2A60E100C7E21D /* NetworkService.swift */; };
+		D093821D2A25C2FB003CAFCA /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093821C2A25C2FB003CAFCA /* CurrentUser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		D027BBDB29E93765005572C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D027BBE129EA069D005572C2 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D027BBE329EA08FD005572C2 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		D07B3BE62A2A60E100C7E21D /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		D093821C2A25C2FB003CAFCA /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,18 +83,52 @@
 		D027BBCC29E93764005572C2 /* WhatYouNeed */ = {
 			isa = PBXGroup;
 			children = (
-				D0124AAA2A012FD400D2E725 /* MapView */,
-				D027BBCD29E93764005572C2 /* AppDelegate.swift */,
-				D027BBCF29E93764005572C2 /* SceneDelegate.swift */,
-				D0124AAD2A02445A00D2E725 /* TabBarController.swift */,
-				D027BBD129E93764005572C2 /* ProfileViewController.swift */,
-				D027BBE329EA08FD005572C2 /* DetailsViewController.swift */,
+				D07B3BEA2A2A663F00C7E21D /* Helpers */,
+				D07B3BE82A2A661100C7E21D /* Network */,
+				D07B3BE92A2A663200C7E21D /* Controllers */,
+				D07B3BEB2A2A665F00C7E21D /* Local */,
 				D027BBD329E93764005572C2 /* Main.storyboard */,
 				D027BBD629E93765005572C2 /* Assets.xcassets */,
 				D027BBD829E93765005572C2 /* LaunchScreen.storyboard */,
 				D027BBDB29E93765005572C2 /* Info.plist */,
 			);
 			path = WhatYouNeed;
+			sourceTree = "<group>";
+		};
+		D07B3BE82A2A661100C7E21D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				D07B3BE62A2A60E100C7E21D /* NetworkService.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		D07B3BE92A2A663200C7E21D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D0124AAA2A012FD400D2E725 /* MapView */,
+				D0124AAD2A02445A00D2E725 /* TabBarController.swift */,
+				D027BBD129E93764005572C2 /* ProfileViewController.swift */,
+				D027BBE329EA08FD005572C2 /* DetailsViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D07B3BEA2A2A663F00C7E21D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D027BBCD29E93764005572C2 /* AppDelegate.swift */,
+				D027BBCF29E93764005572C2 /* SceneDelegate.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		D07B3BEB2A2A665F00C7E21D /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				D093821C2A25C2FB003CAFCA /* CurrentUser.swift */,
+			);
+			path = Local;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,6 +202,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D07B3BE72A2A60E100C7E21D /* NetworkService.swift in Sources */,
+				D093821D2A25C2FB003CAFCA /* CurrentUser.swift in Sources */,
 				D027BBD229E93764005572C2 /* ProfileViewController.swift in Sources */,
 				D027BBCE29E93764005572C2 /* AppDelegate.swift in Sources */,
 				D027BBD029E93764005572C2 /* SceneDelegate.swift in Sources */,

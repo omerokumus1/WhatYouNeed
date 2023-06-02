@@ -16,10 +16,11 @@ class MapViewController: UIViewController {
     private var dummyPinsAdded = false
     private let annotationId = "annotation"
     private var personClicked: Person?
+    private var isLocationPinned = false
+    private var annotation: MKPointAnnotation? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        mapView.register(MKPinAnnotationView.self, forAnnotationViewWithReuseIdentifier: annotationId)
         mapView.delegate = self
         initLocationManager()
         pinning()
@@ -34,13 +35,18 @@ class MapViewController: UIViewController {
 
     @objc private func pinLocation(gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
+            if let ant = self.annotation { self.mapView.removeAnnotation(ant) }
             let touchedPoint = gestureRecognizer.location(in: self.mapView)
             let touchedCoordinates = self.mapView.convert(touchedPoint, toCoordinateFrom: self.mapView)
             let annotation = MKPointAnnotation()
             annotation.coordinate = touchedCoordinates
-            annotation.title = "title"
-            annotation.subtitle = "subtitle"
+            annotation.title = CurrentUser.shared.name
+            annotation.subtitle = ""
             self.mapView.addAnnotation(annotation)
+            isLocationPinned = true
+            self.annotation = annotation
+            CurrentUser.shared.location = CLLocation(latitude: touchedCoordinates.latitude, longitude: touchedCoordinates.longitude)
+            self.viewModel.dummyPins.append(CurrentUser.shared)
         }
     }
     
@@ -66,8 +72,8 @@ extension MapViewController: MKMapViewDelegate {
     private func addDummyPins() {
         viewModel.dummyPins.forEach { person in
             let annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude: person.location.coordinate.latitude,
-                                                           longitude: person.location.coordinate.longitude)
+            annotation.coordinate = CLLocationCoordinate2D(latitude: person.location!.coordinate.latitude,
+                                                           longitude: person.location!.coordinate.longitude)
             annotation.title = person.name
             self.mapView.addAnnotation(annotation)
         }
@@ -79,7 +85,6 @@ extension MapViewController: MKMapViewDelegate {
         }
 
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationId) as? MKPinAnnotationView
-
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotationId)
             pinView?.canShowCallout = true
@@ -94,8 +99,8 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         personClicked = viewModel.dummyPins.first { person in
-            person.location.coordinate.latitude == view.annotation?.coordinate.latitude
-            && person.location.coordinate.longitude == view.annotation?.coordinate.longitude
+            person.location!.coordinate.latitude == view.annotation?.coordinate.latitude
+            && person.location!.coordinate.longitude == view.annotation?.coordinate.longitude
         }
         performSegue(withIdentifier: "goToDetails", sender: nil)
     }

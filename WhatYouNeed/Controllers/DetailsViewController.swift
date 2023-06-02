@@ -84,7 +84,7 @@ class DetailsViewController: UIViewController {
         guard let person = person else {return}
         var address = ""
         let geoCoder = CLGeocoder()
-        geoCoder.reverseGeocodeLocation(person.location) { [weak self] (placemarks, error) in
+        geoCoder.reverseGeocodeLocation(person.location!) { [weak self] (placemarks, error) in
             guard let self = self else {return}
             if let _ = error {
                 return
@@ -117,7 +117,7 @@ class DetailsViewController: UIViewController {
     }
     
     private func initNeedsTxt() {
-        needsTxt.text = person?.needs.joined(separator: "\n")
+        needsTxt.text = person?.needs
         needsTxt.font = UIFont.systemFont(ofSize: 20.0)
         needsContainer.layer.cornerRadius = 8
         needsContainer.backgroundColor = .none

@@ -32,22 +32,10 @@ class ProfileViewController: UIViewController {
     }
     
     private func dummyInit() {
-        nameTxt.text = "John Doe"
-        phoneTxt.text = "+90 555 111 22 33"
-        addressTxt.text = """
-                    8 Jockey Hollow Dr.
-                    Georgetown, SC 29440
-                    """
-        needsTxt.text = """
-                        Need 1
-                        Need 2
-                        Need 3
-                        Need 4
-                        Need 5
-                        Need 6
-                        Need 7
-                        Need 8
-                        """
+        nameTxt.text = CurrentUser.shared.name
+        phoneTxt.text = CurrentUser.shared.phone
+        addressTxt.text = CurrentUser.shared.address
+        needsTxt.text = CurrentUser.shared.needs
     }
     
     private func initNameTxt() {
@@ -94,6 +82,13 @@ class ProfileViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         addressTxt.flashScrollIndicators()
         needsTxt.flashScrollIndicators()
+    }
+    
+    @IBAction func onSaveClicked(_ sender: UIButton) {
+        CurrentUser.shared.name = nameTxt.text ?? ""
+        CurrentUser.shared.phone = phoneTxt.text ?? ""
+        CurrentUser.shared.address = addressTxt.text
+        CurrentUser.shared.needs = needsTxt.text
     }
     
 }
