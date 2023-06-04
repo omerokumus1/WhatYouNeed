@@ -9,10 +9,11 @@ import Foundation
 
 class ObservableObject<T> {
     typealias ObserverClosure = (T) -> Void
-    var value: T {
+    
+    var value: T? {
         didSet {
             observers.forEach { closure in
-                closure(value)
+                closure(value!) // force-unwrap because it is just set
             }
         }
     }
@@ -22,6 +23,7 @@ class ObservableObject<T> {
     init(value: T) {
         self.value = value
     }
+    init() {}
     
     func observeBy(closure: @escaping ObserverClosure) {
         observers.append(closure)

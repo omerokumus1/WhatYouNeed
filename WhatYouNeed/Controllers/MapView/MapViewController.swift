@@ -16,15 +16,44 @@ class MapViewController: UIViewController {
     private var dummyPinsAdded = false
     private let annotationId = "annotation"
     private var personClicked: Person?
-    private var isLocationPinned = false
-    private var annotation: MKPointAnnotation? = nil
+    private var currentUserAnnotation: MKPointAnnotation? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        observeCurrentUser()
+        observeViewModel()
         initLocationManager()
         pinning()
+        self.viewModel.fetchPeople()
     }
+    
+    private func observeCurrentUser() {
+        CurrentUser.shared.observeBy { currentUser in
+            if let annotation = self.currentUserAnnotation {
+                annotation.title = CurrentUser.shared.value?.name ?? ""
+                // Buradan aşağısı silinebilir. CurrentUser set edilince firebase tetiklenecek ve
+                // viewModel'deki people listesi güncellenecek. Akabinde observeViewModel çalışacak
+                if let currentUser = self.viewModel.people.value?.first(where: { person in
+                    person.id == CurrentUser.currentUserId
+                }) {
+                    if let index = self.viewModel.people.value?.firstIndex(where: { person in
+                        person.id == CurrentUser.currentUserId
+                    }) {
+                        self.viewModel.people.value?.remove(at: index)
+                        self.viewModel.people.value?.append(CurrentUser.shared.value!)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func observeViewModel() {
+        viewModel.people.observeBy { people in
+            self.addPins()
+        }
+    }
+    
     
     private func pinning() {
         let longPressGesture = UILongPressGestureRecognizer(target: self,
@@ -35,18 +64,21 @@ class MapViewController: UIViewController {
 
     @objc private func pinLocation(gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
-            if let ant = self.annotation { self.mapView.removeAnnotation(ant) }
+            if let ant = self.currentUserAnnotation { self.mapView.removeAnnotation(ant) }
+            
             let touchedPoint = gestureRecognizer.location(in: self.mapView)
             let touchedCoordinates = self.mapView.convert(touchedPoint, toCoordinateFrom: self.mapView)
             let annotation = MKPointAnnotation()
             annotation.coordinate = touchedCoordinates
-            annotation.title = CurrentUser.shared.name
+            annotation.title = CurrentUser.shared.value?.name ?? ""
             annotation.subtitle = ""
             self.mapView.addAnnotation(annotation)
-            isLocationPinned = true
-            self.annotation = annotation
-            CurrentUser.shared.location = CLLocation(latitude: touchedCoordinates.latitude, longitude: touchedCoordinates.longitude)
-            self.viewModel.dummyPins.append(CurrentUser.shared)
+            self.currentUserAnnotation = annotation
+            
+            if let user = CurrentUser.shared.value?.copy(location: Location(lat: touchedCoordinates.latitude,
+                                                                            long: touchedCoordinates.longitude)) {
+                CurrentUser.set(user: user)
+            }
         }
     }
     
@@ -64,16 +96,16 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         if !dummyPinsAdded {
-            addDummyPins()
+            addPins()
             dummyPinsAdded = true
         }
     }
     
-    private func addDummyPins() {
-        viewModel.dummyPins.forEach { person in
+    private func addPins() {
+        viewModel.people.value?.forEach { person in
             let annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude: person.location!.coordinate.latitude,
-                                                           longitude: person.location!.coordinate.longitude)
+            guard let lat = person.location?.lat, let long = person.location?.long else {return}
+            annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             annotation.title = person.name
             self.mapView.addAnnotation(annotation)
         }
@@ -98,9 +130,9 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        personClicked = viewModel.dummyPins.first { person in
-            person.location!.coordinate.latitude == view.annotation?.coordinate.latitude
-            && person.location!.coordinate.longitude == view.annotation?.coordinate.longitude
+        personClicked = viewModel.people.value?.first { person in
+            person.location!.lat == view.annotation?.coordinate.latitude
+            && person.location!.long == view.annotation?.coordinate.longitude
         }
         performSegue(withIdentifier: "goToDetails", sender: nil)
     }

@@ -8,7 +8,18 @@
 import Foundation
 
 class CurrentUser {
-    static var shared = Person(name: "John Doe", phone: "+90 555 111 22 33", location: nil, address: """
+    static let CURRENT_USER_KEY = "CURRENT_USER_KEY"
+    static var currentUserId: String {
+        get {
+            if let id = UserDefaults.standard.string(forKey: CURRENT_USER_KEY) {
+                return id
+            }
+            let uuid = UUID().uuidString
+            UserDefaults.standard.set(uuid, forKey: CURRENT_USER_KEY)
+            return uuid
+        }
+    }
+    static let shared = ObservableObject(value: Person(id: currentUserId, name: "John Doe", phone: "+90 555 111 22 33", location: nil, address: """
                     8 Jockey Hollow Dr.
                     Georgetown, SC 29440
                     """, needs:
@@ -22,7 +33,17 @@ class CurrentUser {
     Need 7
     Need 8
 """
-    )
+                                                      ))
     private init() { }
+    
+    static func save(currentUser: Person) {
+        shared.set(value: currentUser)
+        NetworkService.shared.save(currentUser: currentUser)
+    }
+    
+    static func set(user: Person) {
+        self.shared.set(value: user)
+        NetworkService.shared.save(currentUser: user)
+    }
     
 }

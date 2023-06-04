@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var needsTxt: UITextView!
     @IBOutlet weak var addressContainer: UIView!
     @IBOutlet weak var needsContainer: UIView!
+    private var currentUser = CurrentUser.shared.value
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +33,10 @@ class ProfileViewController: UIViewController {
     }
     
     private func dummyInit() {
-        nameTxt.text = CurrentUser.shared.name
-        phoneTxt.text = CurrentUser.shared.phone
-        addressTxt.text = CurrentUser.shared.address
-        needsTxt.text = CurrentUser.shared.needs
+        nameTxt.text = currentUser?.name
+        phoneTxt.text = currentUser?.phone
+        addressTxt.text = currentUser?.address
+        needsTxt.text = currentUser?.needs
     }
     
     private func initNameTxt() {
@@ -85,10 +86,10 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func onSaveClicked(_ sender: UIButton) {
-        CurrentUser.shared.name = nameTxt.text ?? ""
-        CurrentUser.shared.phone = phoneTxt.text ?? ""
-        CurrentUser.shared.address = addressTxt.text
-        CurrentUser.shared.needs = needsTxt.text
+        let person = Person(id: currentUser?.id, name: nameTxt.text ?? "", phone: phoneTxt.text ?? "",
+                        location: nil, address: addressTxt.text ?? "", needs: needsTxt.text)
+        CurrentUser.save(currentUser: person)
+        
     }
     
 }
