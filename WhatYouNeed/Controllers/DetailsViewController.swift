@@ -84,7 +84,8 @@ class DetailsViewController: UIViewController {
         guard let person = person else {return}
         var address = ""
         let geoCoder = CLGeocoder()
-        geoCoder.reverseGeocodeLocation(person.location!) { [weak self] (placemarks, error) in
+        guard let lat = person.location?.lat, let long = person.location?.long else {return}
+        geoCoder.reverseGeocodeLocation(CLLocation(latitude: lat, longitude: long)) { [weak self] (placemarks, error) in
             guard let self = self else {return}
             if let _ = error {
                 return
@@ -157,8 +158,8 @@ class DetailsViewController: UIViewController {
     }
     
     @IBAction func navigationClicked(_ sender: UIButton) {
-        guard let location = person?.location else {return}
-        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+        guard let lat = person?.location?.lat, let long = person?.location?.long else {return}
+        CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: lat, longitude: long)) { placemarks, error in
             if let placemarks = placemarks, placemarks.count > 0 {
                 let mkPlacemark = MKPlacemark(placemark: placemarks.first!)
                 let item = MKMapItem(placemark: mkPlacemark)

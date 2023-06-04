@@ -20,6 +20,7 @@
 		D027BBE229EA069D005572C2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027BBE129EA069D005572C2 /* MapViewController.swift */; };
 		D027BBE429EA08FD005572C2 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D027BBE329EA08FD005572C2 /* DetailsViewController.swift */; };
 		D07B3BE72A2A60E100C7E21D /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07B3BE62A2A60E100C7E21D /* NetworkService.swift */; };
+		D07B3BED2A2A68E500C7E21D /* ObservableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07B3BEC2A2A68E500C7E21D /* ObservableObject.swift */; };
 		D093821D2A25C2FB003CAFCA /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093821C2A25C2FB003CAFCA /* CurrentUser.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		D027BBE129EA069D005572C2 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D027BBE329EA08FD005572C2 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		D07B3BE62A2A60E100C7E21D /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		D07B3BEC2A2A68E500C7E21D /* ObservableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObject.swift; sourceTree = "<group>"; };
 		D093821C2A25C2FB003CAFCA /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,6 +121,7 @@
 			children = (
 				D027BBCD29E93764005572C2 /* AppDelegate.swift */,
 				D027BBCF29E93764005572C2 /* SceneDelegate.swift */,
+				D07B3BEC2A2A68E500C7E21D /* ObservableObject.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				D027BBD229E93764005572C2 /* ProfileViewController.swift in Sources */,
 				D027BBCE29E93764005572C2 /* AppDelegate.swift in Sources */,
 				D027BBD029E93764005572C2 /* SceneDelegate.swift in Sources */,
+				D07B3BED2A2A68E500C7E21D /* ObservableObject.swift in Sources */,
 				D0124AAE2A02445A00D2E725 /* TabBarController.swift in Sources */,
 				D027BBE229EA069D005572C2 /* MapViewController.swift in Sources */,
 				D0124AA92A012F7B00D2E725 /* Person.swift in Sources */,
