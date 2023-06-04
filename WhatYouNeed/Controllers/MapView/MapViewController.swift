@@ -34,15 +34,11 @@ class MapViewController: UIViewController {
                 annotation.title = CurrentUser.shared.value?.name ?? ""
                 // Buradan aşağısı silinebilir. CurrentUser set edilince firebase tetiklenecek ve
                 // viewModel'deki people listesi güncellenecek. Akabinde observeViewModel çalışacak
-                if let currentUser = self.viewModel.people.value?.first(where: { person in
+                if let currentUserIndex = self.viewModel.people.value?.firstIndex(where: { person in
                     person.id == CurrentUser.currentUserId
                 }) {
-                    if let index = self.viewModel.people.value?.firstIndex(where: { person in
-                        person.id == CurrentUser.currentUserId
-                    }) {
-                        self.viewModel.people.value?.remove(at: index)
-                        self.viewModel.people.value?.append(CurrentUser.shared.value!)
-                    }
+                    self.viewModel.people.value?.remove(at: currentUserIndex)
+                    self.viewModel.people.value?.append(CurrentUser.shared.value!)
                 }
             }
         }
