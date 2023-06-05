@@ -12,9 +12,7 @@ class ObservableObject<T> {
     
     var value: T? {
         didSet {
-            observers.forEach { closure in
-                closure(value!) // force-unwrap because it is just set
-            }
+            notifyObservers()
         }
     }
     
@@ -31,5 +29,13 @@ class ObservableObject<T> {
     
     func set(value: T) {
         self.value = value
+    }
+    
+    func notifyObservers() {
+        if let value = self.value {
+            observers.forEach { closure in
+                closure(value)
+            }
+        }
     }
 }

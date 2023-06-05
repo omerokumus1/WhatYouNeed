@@ -25,7 +25,7 @@ class MapViewController: UIViewController {
         observeViewModel()
         initLocationManager()
         pinning()
-        self.viewModel.fetchPeople()
+        self.viewModel.fetchPins()
     }
     
     private func observeCurrentUser() {
@@ -34,18 +34,19 @@ class MapViewController: UIViewController {
                 annotation.title = CurrentUser.shared.value?.name ?? ""
                 // Buradan aşağısı silinebilir. CurrentUser set edilince firebase tetiklenecek ve
                 // viewModel'deki people listesi güncellenecek. Akabinde observeViewModel çalışacak
-                if let currentUserIndex = self.viewModel.people.value?.firstIndex(where: { person in
+                if let currentUserIndex = self.viewModel.pins.value?.firstIndex(where: { person in
                     person.id == CurrentUser.currentUserId
                 }) {
-                    self.viewModel.people.value?.remove(at: currentUserIndex)
-                    self.viewModel.people.value?.append(CurrentUser.shared.value!)
+                    self.viewModel.pins.value?.remove(at: currentUserIndex)
+                    self.viewModel.pins.value?.append(CurrentUser.shared.value!)
                 }
             }
         }
     }
     
     private func observeViewModel() {
-        viewModel.people.observeBy { people in
+        viewModel.pins.observeBy { people in
+            self.removePin()
             self.addPins()
         }
     }
@@ -73,7 +74,7 @@ class MapViewController: UIViewController {
             
             if let user = CurrentUser.shared.value?.copy(location: Location(lat: touchedCoordinates.latitude,
                                                                             long: touchedCoordinates.longitude)) {
-                CurrentUser.set(user: user)
+                CurrentUser.set(to: user)
             }
         }
     }
@@ -98,13 +99,34 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     private func addPins() {
-        viewModel.people.value?.forEach { person in
-            let annotation = MKPointAnnotation()
-            guard let lat = person.location?.lat, let long = person.location?.long else {return}
-            annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            annotation.title = person.name
-            self.mapView.addAnnotation(annotation)
+        viewModel.pins.value?.forEach { person in
+            if !isPinned(person) {
+                let annotation = MKPointAnnotation()
+                guard let lat = person.location?.lat, let long = person.location?.long else {return}
+                annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                annotation.title = person.name
+                self.mapView.addAnnotation(annotation)
+            }
+            
         }
+    }
+    
+    private func removePin() {
+        let annotationToRemove = self.mapView.annotations.first(where: { annotation in
+            annotation.coordinate.latitude == self.viewModel.pinToRemove?.location?.lat &&
+            annotation.coordinate.longitude == self.viewModel.pinToRemove?.location?.long
+        })
+        if let annotation = annotationToRemove {
+            self.mapView.removeAnnotation(annotation)            
+        }
+        
+    }
+    
+    private func isPinned(_ person: Person) -> Bool {
+        return self.mapView.annotations.first { annotation in
+            annotation.coordinate.latitude == person.location?.lat &&
+            annotation.coordinate.longitude == person.location?.long
+        } != nil
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -126,7 +148,7 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        personClicked = viewModel.people.value?.first { person in
+        personClicked = viewModel.pins.value?.first { person in
             person.location!.lat == view.annotation?.coordinate.latitude
             && person.location!.long == view.annotation?.coordinate.longitude
         }
