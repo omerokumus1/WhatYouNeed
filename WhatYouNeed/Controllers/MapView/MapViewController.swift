@@ -20,6 +20,7 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NetworkService.shared.handleCurrentUserFirstTimeLaunching()
         mapView.delegate = self
         observeCurrentUser()
         observeViewModel()
@@ -30,27 +31,37 @@ class MapViewController: UIViewController {
     
     private func observeCurrentUser() {
         CurrentUser.shared.observeBy { currentUser in
-            if let annotation = self.currentUserAnnotation {
-                annotation.title = CurrentUser.shared.value?.name ?? ""
-                // Buradan aşağısı silinebilir. CurrentUser set edilince firebase tetiklenecek ve
-                // viewModel'deki people listesi güncellenecek. Akabinde observeViewModel çalışacak
-                if let currentUserIndex = self.viewModel.pins.value?.firstIndex(where: { person in
-                    person.id == CurrentUser.currentUserId
-                }) {
-                    self.viewModel.pins.value?.remove(at: currentUserIndex)
-                    self.viewModel.pins.value?.append(CurrentUser.shared.value!)
-                }
+            if CurrentUser.isPinned() {
+                self.setCurrentUserAnnotationTitle()
             }
+        }
+    }
+    
+    private func setCurrentUserAnnotationTitle() {
+        if let annotation = self.currentUserAnnotation {
+            annotation.title = CurrentUser.shared.value?.name ?? ""
         }
     }
     
     private func observeViewModel() {
         viewModel.pins.observeBy { people in
-            self.removePin()
+            // self.removePin()
+            self.mapView.removeAnnotations(self.mapView.annotations)
             self.addPins()
+            self.setCurrentUserAnnotation()
         }
     }
     
+    private func setCurrentUserAnnotation() {
+        if let currentUser = viewModel.pins.value?.first(where: { person in
+            person.id == CurrentUser.currentUserId
+        }) {
+            currentUserAnnotation = mapView.annotations.first(where: { annotation in
+                annotation.coordinate.latitude == CurrentUser.shared.value?.location?.lat &&
+                annotation.coordinate.longitude == CurrentUser.shared.value?.location?.long
+            }) as? MKPointAnnotation
+        }
+    }
     
     private func pinning() {
         let longPressGesture = UILongPressGestureRecognizer(target: self,
@@ -72,7 +83,7 @@ class MapViewController: UIViewController {
             self.mapView.addAnnotation(annotation)
             self.currentUserAnnotation = annotation
             
-            if let user = CurrentUser.shared.value?.copy(location: Location(lat: touchedCoordinates.latitude,
+            if let user = CurrentUser.shared.value?.copyWith(location: Location(lat: touchedCoordinates.latitude,
                                                                             long: touchedCoordinates.longitude)) {
                 CurrentUser.set(to: user)
             }
@@ -91,33 +102,36 @@ class MapViewController: UIViewController {
 //MARK: - MKMapViewDelegate
 extension MapViewController: MKMapViewDelegate {
     
-    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+   /* func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         if !dummyPinsAdded {
             addPins()
             dummyPinsAdded = true
         }
-    }
+    } */
     
     private func addPins() {
         viewModel.pins.value?.forEach { person in
-            if !isPinned(person) {
+            
                 let annotation = MKPointAnnotation()
                 guard let lat = person.location?.lat, let long = person.location?.long else {return}
                 annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
                 annotation.title = person.name
                 self.mapView.addAnnotation(annotation)
-            }
+            
             
         }
     }
     
     private func removePin() {
-        let annotationToRemove = self.mapView.annotations.first(where: { annotation in
-            annotation.coordinate.latitude == self.viewModel.pinToRemove?.location?.lat &&
-            annotation.coordinate.longitude == self.viewModel.pinToRemove?.location?.long
-        })
-        if let annotation = annotationToRemove {
-            self.mapView.removeAnnotation(annotation)            
+        if viewModel.pinToRemove != nil {
+            let annotationToRemove = self.mapView.annotations.first(where: { annotation in
+                annotation.coordinate.latitude == self.viewModel.pinToRemove?.location?.lat &&
+                annotation.coordinate.longitude == self.viewModel.pinToRemove?.location?.long
+            })
+            if let annotation = annotationToRemove {
+                self.mapView.removeAnnotation(annotation)
+            }
+            viewModel.pinToRemove = nil
         }
         
     }
@@ -159,6 +173,15 @@ extension MapViewController: MKMapViewDelegate {
         if segue.identifier == "goToDetails" {
             let vc = segue.destination as! DetailsViewController
             vc.person = personClicked
+            vc.clearPinClickedHandler = {
+                if self.currentUserAnnotation != nil {
+                    CurrentUser.set(to: (CurrentUser.shared.value?.copyWith(location: Location(lat: nil, long: nil)))!)
+                    print("current user annotation is cleared")
+                    // remove current user from ViewModel.pins
+                    // remove current user from Firebase.pins
+                }
+                
+            }
             if vc.presentingViewController?.isBeingPresented == true {
                 self.present(vc, animated: true)
             }

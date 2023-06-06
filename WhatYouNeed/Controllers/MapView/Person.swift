@@ -35,12 +35,13 @@ struct Person: Codable {
         self.needs = nil
     }
     
-    func copy(id: String? = nil, name: String? = nil, phone: String? = nil, location: Location? = nil,
+    func copyWith(id: String? = nil, name: String? = nil, phone: String? = nil, location: Location? = nil,
               address: String? = nil, needs: String? = nil) -> Person {
         return Person(id: id ?? self.id, name: name ?? self.name, phone: phone ?? self.phone,
                       location: location ?? self.location, address: address ?? self.address,
                       needs: needs ?? self.needs)
     }
+        
     
     func toDict() -> [String: Any] {
         return [

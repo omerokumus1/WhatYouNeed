@@ -17,7 +17,10 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var needsTxt: UITextView!
     @IBOutlet weak var addressContainer: UIView!
     @IBOutlet weak var needsContainer: UIView!
+    @IBOutlet weak var clearPinBtn: UIButton!
     
+    
+    var clearPinClickedHandler: (() -> Void)? = nil
     private var placemark: CLPlacemark!
     var person: Person?
     
@@ -28,11 +31,19 @@ class DetailsViewController: UIViewController {
     
     private func initViews() {
         //        dummyInit()
+        initClearPinButton()
         initNameTxt()
         initPhoneTxt()
         initAddressTxt()
         initNeedsTxt()
         
+    }
+    
+    private func initClearPinButton() {
+        if person?.id == CurrentUser.currentUserId {
+            clearPinBtn.isHidden = false
+            clearPinBtn.isUserInteractionEnabled = true
+        }
     }
     
     private func initNameTxt() {
@@ -169,4 +180,10 @@ class DetailsViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func clearPinClicked(_ sender: UIButton) {
+        clearPinClickedHandler?()
+        dismiss(animated: true)
+    }
+    
 }

@@ -14,10 +14,12 @@ class NetworkService {
     static let shared = NetworkService()
     private let db = Firestore.firestore()
     
-    private init() { observeCurrentUser() }
+    private init() {
+        observeCurrentUser()
+    }
     
     func fetchPins(completion: @escaping (QuerySnapshot?) -> (Void)) {
-        return db.collection(FireStoreConstants.pinCollectionName).getDocuments { querySnapshot, error in
+        db.collection(FireStoreConstants.pinCollectionName).addSnapshotListener { querySnapshot, error in
             if let e = error {
                 print("failed fetching pins: \(e)")
             } else {
@@ -88,11 +90,26 @@ class NetworkService {
             NetworkService.shared.saveOrUpdate(currentUser: currentUser, to: FireStoreConstants.personCollectionName)
             if CurrentUser.isPinned() {
                 NetworkService.shared.saveOrUpdate(currentUser: currentUser, to: FireStoreConstants.pinCollectionName)
+            } else {
+                self.db.collection(FireStoreConstants.pinCollectionName)
+                    .whereField("id", isEqualTo: CurrentUser.currentUserId)
+                    .getDocuments { querySnapshot, error in
+                        if let e = error {
+                            print("error removing pin from firebase: \(e)")
+                        } else if querySnapshot?.documents.first != nil {
+                            querySnapshot?.documents.first?.reference.delete(completion: { error in
+                                if let e = error {
+                                    print("error while removing document: \(e)")
+                                } else {
+                                    print("document is removed successfully: \(querySnapshot?.documents.first?.reference)")
+                                }
+                            })
+                        }
+                        
+                    }
             }
         }
     }
-    
-    
 }
 
 class FireStoreConstants {

@@ -30,17 +30,20 @@ class MapViewModel {
  
     private func observeCurrentUser() {
         CurrentUser.shared.observeBy { currentUser in
-            let index = self.pins.value?.firstIndex(where: { person in
+            let currentUserIndex = self.pins.value?.firstIndex(where: { person in
                 person.id == currentUser.id
             })
-            if index != nil {
-                self.pinToRemove = self.pins.value?[index!]
-                self.pins.value?.remove(at: index!)
+            if currentUserIndex != nil && CurrentUser.isPinned() { // update current user pin
+                self.pins.value?.remove(at: currentUserIndex!)
                 self.pins.value?.append(currentUser)
-                //self.pins.notifyObservers()
-            } else if CurrentUser.isPinned() {
+            } else if currentUserIndex == nil && CurrentUser.isPinned() { // add current user for the first time
                 self.pins.value?.append(currentUser)
+            } else if currentUserIndex != nil && !CurrentUser.isPinned() { // remove current user pin
+                self.pinToRemove = self.pins.value?[currentUserIndex!]
+                self.pins.value?.remove(at: currentUserIndex!)
             }
+            self.pins.notifyObservers()
+                
         }
     }
 }
